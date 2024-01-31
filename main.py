@@ -1,21 +1,30 @@
 """weather in city"""
 
-# import python_weather
-# import asyncio
+import python_weather
+import asyncio
+import os
 
 
-# async def getweather(city):
-#     async with python_weather.Client(
-#         unit=python_weather.IMPERIAL
-#     ) as client:
-#         weather = await client.get(city)
-#         f_temp = weather.current.temperature
-#         c_temp = (f_temp - 32) / 9*5
-#         print(f'In {city} {round(c_temp, 2)} C')
+def f_to_cel(f):
+    return round((f - 32) / 9*5, 2)
+
+
+async def getweather(city):
+    async with python_weather.Client(format=python_weather.IMPERIAL) as client:
+        weather = await client.get(city)
+        print(f"Weather in {city}:  {f_to_cel(forecast.date, forecast.astronomy)} ℃")
     
-# asyncio.set_event_loop_policy(asyncio.DefaultEventLoopPolicy())
+        for forecast in weather.forecasts:
+            print
+        
+            for hourly in forecast.hourly:
+                print(f" --> {hourly!r}")
+ 
 
+if os.name == "nt":
 
-# asyncio.run(getweather("Formby"))
+    asyncio.set_event_loop_policy(asyncio.DefaultEventLoopPolicy())
 
+city = input("Input city name: ")
+asyncio.run(getweather(city))
 
